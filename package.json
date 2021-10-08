@@ -1,0 +1,23 @@
+{
+  "name": "whennext",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattschlosser/whennext.git"
+  },
+  "author": "Matt Schlosser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattschlosser/whennext/issues"
+  },
+  "homepage": "https://github.com/mattschlosser/whennext#readme"
+}
