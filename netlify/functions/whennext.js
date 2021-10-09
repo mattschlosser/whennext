@@ -49,7 +49,7 @@ exports.handler = async function (event, context) {
             token = await fetchToken();
         }
         // prevent script from running on any other site, except dev
-        if (event.headers.host !== HOST) {
+        if (event.headers.host !== process.env.HOST) {
             if (['localhost:8080'].includes(event.headers.host)) {
                 headers['Access-Control-Allow-Origin'] = event.headers.host
             } else {
