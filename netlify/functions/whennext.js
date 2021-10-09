@@ -53,6 +53,7 @@ exports.handler = async function (event, context) {
         if (url.host !== process.env.HOST) {
             if (['localhost:8080'].includes(url.host)) {
                 headers['Access-Control-Allow-Origin'] = url.host
+                headers['Access-Control-Allow-Methods'] = "GET"
             } else {
                 return {
                     statusCode: 400
