@@ -6,9 +6,7 @@ const headers = {
 let token = null;
 const fetchToken = () => fetch(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_CLIENT_SECRET}&grant_type=client_credentials`, {
     method: 'POST'
-}).then(res => {
-    return res.json()
-})
+}).then(res => res.json())
 
 const getUser = async (username) => {
     return await fetch(`https://api.twitch.tv/helix/users?login=${username}`, {
