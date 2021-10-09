@@ -84,7 +84,7 @@ exports.handler = async function (event, context) {
                     }))
                 }
                 // wait for every promise
-                await Promise.all(...promises);
+                await Promise.all(promises);
                 upcomingStreams.sort(({next_stream: a},{next_stream: b}) => a.start_time > b.start_time ? 1 : a.start_time < b.start_time ? -1 : 0)
                 return {
                     statusCode: 200, 
