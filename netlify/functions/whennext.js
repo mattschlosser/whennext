@@ -49,14 +49,16 @@ exports.handler = async function (event, context) {
             token = await fetchToken();
         }
         // prevent script from running on any other site, except dev
-        let url = new URL(event.headers.origin);
-        if (url.host !== process.env.HOST) {
-            if (['localhost:8080'].includes(url.host)) {
-                headers['Access-Control-Allow-Origin'] = url.protocol + '//' +  url.host
-                headers['Access-Control-Allow-Methods'] = "GET"
-            } else {
-                return {
-                    statusCode: 400
+        if (event.headers.origin) {
+            let url = new URL(event.headers.origin);
+            if (url.host !== process.env.HOST) {
+                if (['localhost:8080'].includes(url.host)) {
+                    headers['Access-Control-Allow-Origin'] = url.protocol + '//' +  url.host
+                    headers['Access-Control-Allow-Methods'] = "GET"
+                } else {
+                    return {
+                        statusCode: 400
+                    }
                 }
             }
         }
