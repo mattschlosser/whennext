@@ -3,8 +3,6 @@ const headers = {
     'Content-type': 'application/json', 
     'Cache-Control': 'public,max-age=3600'
 };
-const dotenv = require('dotenv');
-dotenv.config();
 let token = null;
 const fetchToken = () => fetch(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_CLIENT_SECRET}&grant_type=client_credentials`, {
     method: 'POST'
