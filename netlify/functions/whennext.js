@@ -50,7 +50,7 @@ exports.handler = async function (event, context) {
         }
         // prevent script from running on any other site, except dev
         if (event.headers.host !== HOST) {
-            if (['whennext.mattschlosser.me', 'localhost:8080'].includes(event.headers.host)) {
+            if (['localhost:8080'].includes(event.headers.host)) {
                 headers['Access-Control-Allow-Origin'] = event.headers.host
             } else {
                 return {
