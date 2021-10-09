@@ -43,43 +43,46 @@ const getSchedule = async(follow) => {
 }
 
 exports.handler = async function (event, context) {
-    if (token === null) {
-        token = await fetchToken();
-    }
-    if (event.queryStringParameters) {
-        let username = event.queryStringParameters.user;
-        if (username) {
-            let user = await getUser(username)
-            let follows = await getFollows(user);
-            let upcomingStreams = [];
-            for (let follow of follows) {
-                let schedule = await getSchedule(follow);
-                if (schedule.data) {
-                    // assume the first stream is net
-                    if (schedule.data.segments?.length) {
-                        let nextTime = schedule.data.segments[0];
-                        upcomingStreams.push({
-                            streamer: follow.to_name, 
-                            next_stream: nextTime
-                        })
+    if (event.httpMethod === 'GET') {
+        console.log(event);
+        if (token === null) {
+            token = await fetchToken();
+        }
+        if (event.queryStringParameters) {
+            let username = event.queryStringParameters.user;
+            if (username) {
+                let user = await getUser(username)
+                let follows = await getFollows(user);
+                let upcomingStreams = [];
+                for (let follow of follows) {
+                    let schedule = await getSchedule(follow);
+                    if (schedule.data) {
+                        // assume the first stream is net
+                        if (schedule.data.segments?.length) {
+                            let nextTime = schedule.data.segments[0];
+                            upcomingStreams.push({
+                                streamer: follow.to_name, 
+                                next_stream: nextTime
+                            })
+                        }
                     }
                 }
-            }
-            upcomingStreams.sort(({next_stream: a},{next_stream: b}) => a.start_time > b.start_time ? 1 : a.start_time < b.start_time ? -1 : 0)
-            return {
-                statusCode: 200, 
-                headers, 
-                body: JSON.stringify(
-                    upcomingStreams
-                )
-            }
-        } else {
-            return {
-                statusCode: 400, 
-                headers, 
-                body: JSON.stringify({
-                    message: "Invalid command"  
-                })
+                upcomingStreams.sort(({next_stream: a},{next_stream: b}) => a.start_time > b.start_time ? 1 : a.start_time < b.start_time ? -1 : 0)
+                return {
+                    statusCode: 200, 
+                    headers, 
+                    body: JSON.stringify(
+                        upcomingStreams
+                    )
+                }
+            } else {
+                return {
+                    statusCode: 400, 
+                    headers, 
+                    body: JSON.stringify({
+                        message: "Invalid command"  
+                    })
+                }
             }
         }
     }
