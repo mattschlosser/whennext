@@ -66,19 +66,23 @@ exports.handler = async function (event, context) {
                 let user = await getUser(username)
                 let follows = await getFollows(user);
                 let upcomingStreams = [];
+                let promises = [];
                 for (let follow of follows) {
-                    let schedule = await getSchedule(follow);
-                    if (schedule.data) {
-                        // assume the first stream is net
-                        if (schedule.data.segments?.length) {
-                            let nextTime = schedule.data.segments[0];
-                            upcomingStreams.push({
-                                streamer: follow.to_name, 
-                                next_stream: nextTime
-                            })
+                    promises.push(getSchedule(follow).then(schedule => {
+                        if (schedule.data) {
+                            // assume the first stream is net
+                            if (schedule.data.segments?.length) {
+                                let nextTime = schedule.data.segments[0];
+                                upcomingStreams.push({
+                                    streamer: follow.to_name, 
+                                    next_stream: nextTime
+                                })
+                            }
                         }
-                    }
+                    }))
                 }
+                // wait for every promise
+                await Promise.all(...promises);
                 upcomingStreams.sort(({next_stream: a},{next_stream: b}) => a.start_time > b.start_time ? 1 : a.start_time < b.start_time ? -1 : 0)
                 return {
                     statusCode: 200, 
