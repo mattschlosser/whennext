@@ -12,7 +12,7 @@ const search = async () => {
   loading.value = true;
   await fetch(`https://whennext.mattschlosser.me/.netlify/functions/whennext?user=${user.value}`, {
     headers: {
-      'If-Match': `"${base64encode(user.value)}"`
+      'If-Match': `"${btoa(user.value)}"`
     }
   }).then(res => res.json())
     .then(s => streamers.value = s).finally(e => loading.value = false);
