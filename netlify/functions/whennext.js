@@ -66,6 +66,7 @@ exports.handler = async function (event, context) {
             let username = event.queryStringParameters.user;
             if (username) {
                 let user = await getUser(username)
+                headers['ETag'] = `"${base64encode(username)}"`;
                 let follows = await getFollows(user);
                 let upcomingStreams = [];
                 let promises = [];
