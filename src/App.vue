@@ -2,7 +2,6 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref } from '@vue/reactivity'
-import HelloWorld from './components/HelloWorld.vue'
 import Streamerlist from './components/StreamerList.vue'
 
 const user = ref('');
@@ -35,7 +34,7 @@ const search = async () => {
   <!-- <HelloWorld msg="Hello Vue 3 + Vite" /> -->
   <p v-if="loading">Loading... please wait</p>
   <Streamerlist v-else-if="streamers.length" :streamers="streamers" />
-  <p v-else>Search for your favourite streamer's stream above</p>
+  <p v-else>Enter your username to get a schedule of all your followed Twticher's, all in one place! Easily find the next time any of your Twitch followed channels goes live!</p>
 
   <p>Another project by <a target="_blank" href='https://mattschlosser.me'>Matt Schlosser</a></p>
 </template>
