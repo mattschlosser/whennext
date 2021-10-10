@@ -18,7 +18,7 @@ const getUser = async (username) => {
     }).then(res => res.json()).then(res => res.data[0]);
 }
 const getFollows = async(user) => {
-    results = [];
+    let results = [];
     let r = {};
     do {
         r = await fetch(`https://api.twitch.tv/helix/users/follows?from_id=${user.id}${r.pagination ? `&after=${r.pagination.cursor}` : ``}`, {
