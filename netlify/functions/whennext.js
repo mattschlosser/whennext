@@ -41,16 +41,18 @@ const getSchedule = async(follow) => {
         }
     }).then(res => res.json())
 }
+let corsDomains = ['localhost:8080', 'next.rugg.rocks'];
 
 exports.handler = async function (event, context) {
     if (event.httpMethod === 'OPTIONS') {
         let url = new URL(event.headers.origin);
-        if (['localhost:8080', 'next.rugg.rocks'].includes(url.host)) {
+        if (corsDomains.includes(url.host)) {
             return {
                 headers: {
                     'Access-Control-Allow-Origin': url.protocol + '//' + url.host,
                     'Access-Control-Allow-Methods': "GET"
-                }
+                }, 
+                statusCode: 200
             }
         }
     }
@@ -63,7 +65,7 @@ exports.handler = async function (event, context) {
         if (event.headers.origin) {
             let url = new URL(event.headers.origin);
             if (url.host !== process.env.HOST) {
-                if (['localhost:8080', 'next.rugg.rocks'].includes(url.host)) {
+                if (corsDomains.includes(url.host)) {
                     headers['Access-Control-Allow-Origin'] = url.protocol + '//' +  url.host
                     headers['Access-Control-Allow-Methods'] = "GET"
                 } else {
