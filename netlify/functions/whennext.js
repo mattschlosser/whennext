@@ -50,7 +50,8 @@ exports.handler = async function (event, context) {
             return {
                 headers: {
                     'Access-Control-Allow-Origin': url.protocol + '//' + url.host,
-                    'Access-Control-Allow-Methods': "GET"
+                    'Access-Control-Allow-Methods': "GET", 
+                    'Access-Control-Allow-Headers': 'x-cache-bucket'
                 }, 
                 statusCode: 200
             }
