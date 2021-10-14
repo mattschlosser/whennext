@@ -43,6 +43,17 @@ const getSchedule = async(follow) => {
 }
 
 exports.handler = async function (event, context) {
+    if (event.httpMethod === 'OPTIONS') {
+        let url = new URL(event.headers.origin);
+        if (['localhost:8080', 'next.rugg.rocks'].includes(url.host)) {
+            return {
+                headers: {
+                    'Access-Control-Allow-Origin': url.protocol + '//' + url.host,
+                    'Access-Control-Allow-Methods': "GET"
+                }
+            }
+        }
+    }
     if (event.httpMethod === 'GET') {
         console.log(event);
         if (token === null) {
