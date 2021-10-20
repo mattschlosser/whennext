@@ -15,7 +15,7 @@ const getUser = async (username) => {
             'Client-Id': process.env.TWITCH_CLIENT_ID, 
             'Authorization': `Bearer ${token.access_token}`
         }
-    }).then(res => { console.log(res); return res.json()}).then(res => res.data[0]);
+    }).then(res => res.json()).then(res => res.data[0]);
 }
 const getFollows = async(user) => {
     let results = [];
@@ -39,7 +39,7 @@ const getSchedule = async(follow) => {
             'Client-Id': process.env.TWITCH_CLIENT_ID, 
             'Authorization': `Bearer ${token.access_token}`
         }
-    }).then(res => res.json())
+    }).then(res => { console.log(new Date(), res.headers.get('ratelimit-remaining')); return res.json()})
 }
 let corsDomains = ['localhost:8080', 'next.rugg.rocks'];
 
