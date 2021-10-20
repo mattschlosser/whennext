@@ -15,7 +15,7 @@ const getUser = async (username) => {
             'Client-Id': process.env.TWITCH_CLIENT_ID, 
             'Authorization': `Bearer ${token.access_token}`
         }
-    }).then(res => res.json()).then(res => res.data[0]);
+    }).then(res => { console.log(res); return res.json()}).then(res => res.data[0]);
 }
 const getFollows = async(user) => {
     let results = [];
@@ -44,9 +44,13 @@ const getSchedule = async(follow) => {
 let corsDomains = ['localhost:8080', 'next.rugg.rocks'];
 
 exports.handler = async function (event, context) {
+    // if this is a preflight request
     if (event.httpMethod === 'OPTIONS') {
+        // get the origin header
         let url = new URL(event.headers.origin);
+        // check if the origin is in the list of allowed hosts
         if (corsDomains.includes(url.host)) {
+            // if it is, return the appropriate headers
             return {
                 headers: {
                     'Access-Control-Allow-Origin': url.protocol + '//' + url.host,
@@ -57,19 +61,27 @@ exports.handler = async function (event, context) {
             }
         }
     }
+    // if this is a GET request
     if (event.httpMethod === 'GET') {
         console.log(event);
         if (token === null) {
             token = await fetchToken();
         }
         // prevent script from running on any other site, except dev
+        // check the origin
         if (event.headers.origin) {
             let url = new URL(event.headers.origin);
+            // if it is not same-origin
             if (url.host !== process.env.HOST) {
+                // it is a croos-origin request
+
+                // check the origin's host is in the list of allowed hosts
                 if (corsDomains.includes(url.host)) {
+                    // allow the origin
                     headers['Access-Control-Allow-Origin'] = url.protocol + '//' +  url.host
                     headers['Access-Control-Allow-Methods'] = "GET"
                 } else {
+                    // don't run the script, because the API call to Twitch counts toward a rate limit
                     return {
                         statusCode: 400
                     }
