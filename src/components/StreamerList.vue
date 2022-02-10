@@ -9,10 +9,12 @@ const w = window
 <template>
     <ul class="list">
         <li class="list-item" v-for="(streamer, i) in streamers" :key="streamer.streamer">
-            <p class="title">{{streamer.streamer}}</p>
-            <p>{{new Date(streamer.next_stream.start_time).toLocaleString(w.navigator.language, {
-                dateStyle: "full", timeStyle: "short"})}} - {{streamer.next_stream.title || "Untitled"}}
-            </p>
+            <a :href="`https://twitch.tv/${{streamer.streamer}}`" target="_blank" rel="noreferrer"> 
+                <p class="title">{{streamer.streamer}}</p>
+                <p>{{new Date(streamer.next_stream.start_time).toLocaleString(w.navigator.language, {
+                    dateStyle: "full", timeStyle: "short"})}} - {{streamer.next_stream.title || "Untitled"}}
+                </p>
+            </a>
         </li>
     </ul>
 </template>
