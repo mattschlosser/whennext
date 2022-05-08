@@ -3,11 +3,12 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref } from '@vue/reactivity'
 import Streamerlist from './components/StreamerList.vue'
-
-const user = ref('');
+let initUser = new URL(window.location).searchParams.get('user');
+const user = ref(initUser || '');
 const streamers = ref([]);
 const loading = ref(false);
 const search = async () => {
+  window.history.replaceState(null, null, `?user=${user.value}`);
   loading.value = true;
   await fetch(`https://whennext.mattschlosser.me/.netlify/functions/whennext?user=${user.value}`, {
     headers: {
@@ -15,6 +16,9 @@ const search = async () => {
     }
   }).then(res => res.json())
     .then(s => streamers.value = s).finally(e => loading.value = false);
+}
+if (user.value !== '') {
+  search();
 }
 
 </script>
